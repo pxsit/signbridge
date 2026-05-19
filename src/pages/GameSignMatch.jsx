@@ -14,6 +14,18 @@ export default function GameSignMatch() {
     const [score, setScore] = useState(0);
     const [feedback, setFeedback] = useState('');
     const current = deck[idx];
+
+    const options = useMemo(() => {
+        if (!current) return [];
+        const opts = pick(
+            signs.filter((s) => s.id !== current.id),
+            3
+        ).map((s) => s.word);
+        // eslint-disable-next-line react-hooks/purity
+        opts.splice(Math.floor(Math.random() * 4), 0, current.word);
+        return opts;
+    }, [current]);
+
     if (!current) {
         const stars = score >= 8 ? 3 : score >= 5 ? 2 : 1;
         return (
@@ -32,11 +44,6 @@ export default function GameSignMatch() {
             </div>
         );
     }
-    const options = pick(
-        signs.filter((s) => s.id !== current.id),
-        3
-    ).map((s) => s.word);
-    options.splice(Math.floor(Math.random() * 4), 0, current.word);
     const answer = (word) => {
         if (word === current.word) {
             setScore((s) => s + 1);

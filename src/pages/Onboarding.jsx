@@ -65,7 +65,7 @@ export default function Onboarding() {
             {step === 3 && (
                 <div className="bg-white p-4 rounded-2xl">
                     <label htmlFor="name" className="font-bold text-xl">
-                        What's your name?
+                        What&apos;s your name?
                     </label>
                     <input
                         id="name"

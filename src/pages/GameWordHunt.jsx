@@ -12,6 +12,18 @@ export default function GameWordHunt() {
     const [idx, setIdx] = useState(0);
     const [score, setScore] = useState(0);
     const current = deck[idx];
+
+    const options = useMemo(() => {
+        if (!current) return [];
+        const opts = pick(
+            signs.filter((s) => s.id !== current.id),
+            5
+        );
+        // eslint-disable-next-line react-hooks/purity
+        opts.splice(Math.floor(Math.random() * 6), 0, current);
+        return opts;
+    }, [current]);
+
     if (!current) {
         const stars = score >= 6 ? 3 : score >= 4 ? 2 : 1;
         return (
@@ -30,11 +42,6 @@ export default function GameWordHunt() {
             </div>
         );
     }
-    const options = pick(
-        signs.filter((s) => s.id !== current.id),
-        5
-    );
-    options.splice(Math.floor(Math.random() * 6), 0, current);
     const answer = (id) => {
         if (id === current.id) setScore((s) => s + 1);
         setIdx((i) => i + 1);

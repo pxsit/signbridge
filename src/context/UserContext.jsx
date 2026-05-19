@@ -23,16 +23,11 @@ export const UserProvider = ({ children }) => {
     const [state, setState] = useState(() => {
         const saved = loadState();
         if (!saved) return initialState;
-        return { ...initialState, ...saved };
+        
+        const loadedState = { ...initialState, ...saved };
+        const newStreak = checkStreak(loadedState.dailyStreak, loadedState.lastPracticeDate);
+        return { ...loadedState, dailyStreak: newStreak };
     });
-
-    useEffect(() => {
-        setState((prev) => {
-            const newStreak = checkStreak(prev.dailyStreak, prev.lastPracticeDate);
-            if (newStreak === prev.dailyStreak) return prev;
-            return { ...prev, dailyStreak: newStreak };
-        });
-    }, []);
 
     useEffect(() => {
         saveState(state);

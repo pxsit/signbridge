@@ -6,7 +6,7 @@ import { useUser } from '../context/UserContext';
 
 export default function GameStoryTime() {
     const { addGameResult } = useUser();
-    const [story] = useState(stories[Math.floor(Math.random() * stories.length)]);
+    const [story] = useState(() => stories[Math.floor(Math.random() * stories.length)]);
     const [line, setLine] = useState(0);
     const [qIndex, setQIndex] = useState(0);
     const [correct, setCorrect] = useState(0);
