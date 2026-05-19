@@ -1,6 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+    --color-primary: #c0392b;
+    --color-background: #f5f0eb;
+    --color-charcoal: #2c2c2c;
+    --color-amberSoft: #f6c667;
+    --color-success: #2f9e44;
+    --font-rounded: Nunito, Poppins, sans-serif;
+}
 
 :root {
     color: #2c2c2c;
