@@ -1,4 +1,8 @@
-export default function StreakCard({ streak }) {
+interface StreakCardProps {
+    streak: number;
+}
+
+export default function StreakCard({ streak }: StreakCardProps) {
     return (
         <div className="bg-white rounded-2xl border border-red-200 p-4">
             <p className="text-sm font-semibold">Streak</p>

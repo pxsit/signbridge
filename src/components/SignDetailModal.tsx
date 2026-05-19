@@ -1,8 +1,18 @@
 import { useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import GifPlaceholder from './GifPlaceholder';
+import type { Sign } from '../types';
 
-export default function SignDetailModal({ sign, index, total, isLearned, onClose, onLearn }) {
+interface SignDetailModalProps {
+    sign: Sign | null;
+    index: number;
+    total: number;
+    isLearned: boolean;
+    onClose: () => void;
+    onLearn: (sign: Sign) => void;
+}
+
+export default function SignDetailModal({ sign, index, total, isLearned, onClose, onLearn }: SignDetailModalProps) {
     const [replayKey, setReplayKey] = useState(0);
     const [celebrate, setCelebrate] = useState(false);
     const reducedMotion = useReducedMotion();

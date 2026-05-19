@@ -1,4 +1,11 @@
-export default function Badge({ badge, earned }) {
+import type { Badge as BadgeType } from '../types';
+
+interface BadgeProps {
+    badge: BadgeType;
+    earned: boolean;
+}
+
+export default function Badge({ badge, earned }: BadgeProps) {
     return (
         <div
             className={`rounded-2xl border p-3 text-center ${earned ? 'bg-amberSoft/30 border-amberSoft' : 'bg-slate-100 border-slate-300 opacity-70'}`}

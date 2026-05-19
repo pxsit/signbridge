@@ -1,4 +1,6 @@
-export const signs = [
+import type { Sign } from '../types';
+
+export const signs: Sign[] = [
     {
         id: 1,
         word: 'Eat',

@@ -1,4 +1,13 @@
-export default function GifPlaceholder({ word, size = 'md', gifUrl, label }) {
+type GifSize = 'sm' | 'md' | 'lg';
+
+interface GifPlaceholderProps {
+    word: string;
+    size?: GifSize;
+    gifUrl?: string | null;
+    label?: string;
+}
+
+export default function GifPlaceholder({ word, size = 'md', gifUrl, label }: GifPlaceholderProps) {
     const sizes = {
         sm: 'h-24 w-24 text-sm',
         md: 'h-36 w-36 text-base',

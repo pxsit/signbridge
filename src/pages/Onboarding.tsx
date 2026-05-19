@@ -16,7 +16,7 @@ export default function Onboarding() {
 
     const categories = [...new Set(signs.map((s) => s.category))];
 
-    const finish = (category) => {
+    const finish = (category: string) => {
         updateProfile({ userName: userName || 'Friend', userRole, onboardingDone: true });
         navigate(`/learn/${encodeURIComponent(category)}`);
     };

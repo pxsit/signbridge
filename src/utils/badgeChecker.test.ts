@@ -6,15 +6,15 @@ vi.mock('../data/badges', () => ({
     badges: [
         { id: 'b1', condition: { type: 'signs_learned', value: 5 } },
         { id: 'b2', condition: { type: 'streak', value: 3 } },
-        { id: 'b3', condition: { type: 'stars', value: 10 } }
-    ]
+        { id: 'b3', condition: { type: 'stars', value: 10 } },
+    ],
 }));
 
 vi.mock('../data/signs', () => ({
     signs: [
         { id: 's1', category: 'basics' },
-        { id: 's2', category: 'basics' }
-    ]
+        { id: 's2', category: 'basics' },
+    ],
 }));
 
 describe('badgeChecker', () => {
@@ -25,7 +25,7 @@ describe('badgeChecker', () => {
             dailyStreak: 0,
             gameStars: 0,
             gameCompletions: {},
-            earnedBadges: []
+            earnedBadges: [],
         });
         expect(newBadges).toContain('b1');
     });
@@ -37,7 +37,7 @@ describe('badgeChecker', () => {
             dailyStreak: 2,
             gameStars: 5,
             gameCompletions: {},
-            earnedBadges: []
+            earnedBadges: [],
         });
         expect(newBadges).not.toContain('b1');
         expect(newBadges).not.toContain('b2');
@@ -51,9 +51,9 @@ describe('badgeChecker', () => {
             dailyStreak: 5, // met b2
             gameStars: 12, // met b3
             gameCompletions: {},
-            earnedBadges: ['b1'] // b1 is already earned
+            earnedBadges: ['b1'], // b1 is already earned
         });
-        
+
         expect(newBadges).toContain('b1'); // Result includes previously earned
         expect(newBadges).toContain('b2');
         expect(newBadges).toContain('b3');

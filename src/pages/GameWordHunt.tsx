@@ -3,31 +3,29 @@ import { signs } from '../data/signs';
 import GifPlaceholder from '../components/GifPlaceholder';
 import { useUser } from '../context/UserContext';
 
-const rounds = 10;
+const rounds = 8;
+const pick = <T,>(arr: T[], n: number): T[] => [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
 
-const pick = (arr, n) => [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
-
-export default function GameSignMatch() {
+export default function GameWordHunt() {
     const { addGameResult } = useUser();
     const deck = useMemo(() => pick(signs, rounds), []);
     const [idx, setIdx] = useState(0);
     const [score, setScore] = useState(0);
-    const [feedback, setFeedback] = useState('');
     const current = deck[idx];
 
     const options = useMemo(() => {
         if (!current) return [];
         const opts = pick(
             signs.filter((s) => s.id !== current.id),
-            3
-        ).map((s) => s.word);
+            5
+        );
         // eslint-disable-next-line react-hooks/purity
-        opts.splice(Math.floor(Math.random() * 4), 0, current.word);
+        opts.splice(Math.floor(Math.random() * 6), 0, current);
         return opts;
     }, [current]);
 
     if (!current) {
-        const stars = score >= 8 ? 3 : score >= 5 ? 2 : 1;
+        const stars = score >= 6 ? 3 : score >= 4 ? 2 : 1;
         return (
             <div className="space-y-3">
                 <h1 className="text-3xl font-extrabold">Results</h1>
@@ -36,7 +34,7 @@ export default function GameSignMatch() {
                 </p>
                 <p>Stars earned: {'⭐'.repeat(stars)}</p>
                 <button
-                    onClick={() => addGameResult('sign-match', stars)}
+                    onClick={() => addGameResult('word-hunt', stars)}
                     className="bg-primary text-white rounded-xl px-4 py-3 min-h-12"
                 >
                     Save Result
@@ -44,36 +42,26 @@ export default function GameSignMatch() {
             </div>
         );
     }
-    const answer = (word) => {
-        if (word === current.word) {
-            setScore((s) => s + 1);
-            setFeedback('Great! ✅');
-            setTimeout(() => {
-                setIdx((i) => i + 1);
-                setFeedback('');
-            }, 500);
-            return;
-        }
-        setFeedback('Try again ❌');
+    const answer = (id: number) => {
+        if (id === current.id) setScore((s) => s + 1);
+        setIdx((i) => i + 1);
     };
     return (
-        <div className="space-y-4">
+        <div className="space-y-3">
             <h1 className="text-2xl font-extrabold">
-                Sign Match {idx + 1}/{rounds}
+                Word Hunt {idx + 1}/{rounds}
             </h1>
-            <GifPlaceholder word={current.word} size="md" gifUrl={current.gifUrl} label={current.gifPlaceholderLabel} />
-            <div className="grid gap-2">
+            <p className="text-xl font-bold">Find: {current.word}</p>
+            <div className="h-3 bg-slate-200 rounded-full">
+                <div className="h-3 bg-primary rounded-full" style={{ width: `${100 - idx * 12.5}%` }} />
+            </div>
+            <div className="grid grid-cols-2 gap-2">
                 {options.map((o) => (
-                    <button
-                        key={o}
-                        onClick={() => answer(o)}
-                        className="bg-white border rounded-xl px-4 py-3 min-h-12 font-bold"
-                    >
-                        {o}
+                    <button key={o.id} onClick={() => answer(o.id)} className="bg-white border rounded-xl p-2 min-h-12">
+                        <GifPlaceholder word={o.word} size="sm" gifUrl={o.gifUrl} label={o.gifPlaceholderLabel} />
                     </button>
                 ))}
             </div>
-            <p className="font-bold">{feedback}</p>
         </div>
     );
 }

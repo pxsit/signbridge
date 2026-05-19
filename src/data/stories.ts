@@ -1,4 +1,6 @@
-export const stories = [
+import type { Story } from '../types';
+
+export const stories: Story[] = [
     {
         id: 'story1',
         title: 'Morning Together',

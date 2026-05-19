@@ -1,4 +1,6 @@
-export const badges = [
+import type { Badge } from '../types';
+
+export const badges: Badge[] = [
     {
         id: 'first_sign',
         name: 'First Sign',

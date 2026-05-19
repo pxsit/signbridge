@@ -1,4 +1,10 @@
-export default function ProgressBar({ current, total, label }) {
+interface ProgressBarProps {
+    current: number;
+    total: number;
+    label: string;
+}
+
+export default function ProgressBar({ current, total, label }: ProgressBarProps) {
     const pct = Math.min(100, Math.round((current / total) * 100));
     return (
         <div aria-label={label}>

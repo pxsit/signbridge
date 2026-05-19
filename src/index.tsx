@@ -5,9 +5,9 @@ import App from './App';
 import './index.css';
 import { UserProvider } from './context/UserContext';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
             <UserProvider>
                 <App />
             </UserProvider>

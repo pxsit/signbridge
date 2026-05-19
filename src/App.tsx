@@ -33,6 +33,7 @@ export default function App() {
                     <Route path="/progress" element={<Progress />} />
                     <Route path="/caregiver" element={<CaregiverMode />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="*" element={<Navigate to={onboardingDone ? '/' : '/onboarding'} replace />} />
                 </Routes>
             </div>
             {!hideNav && <Navbar />}

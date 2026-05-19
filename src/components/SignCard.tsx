@@ -1,6 +1,13 @@
 import GifPlaceholder from './GifPlaceholder';
+import type { Sign } from '../types';
 
-export default function SignCard({ sign, learned, onClick }) {
+interface SignCardProps {
+    sign: Sign;
+    learned: boolean;
+    onClick: () => void;
+}
+
+export default function SignCard({ sign, learned, onClick }: SignCardProps) {
     return (
         <button
             onClick={onClick}

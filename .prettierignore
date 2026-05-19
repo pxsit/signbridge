@@ -4,5 +4,3 @@ dist
 lint-*
 .gitignore
 .gitattributes
-.prettierignore
-.prettierrc.js

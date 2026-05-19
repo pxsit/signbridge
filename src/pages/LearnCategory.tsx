@@ -4,14 +4,15 @@ import { signs } from '../data/signs';
 import { useUser } from '../context/UserContext';
 import SignCard from '../components/SignCard';
 import SignDetailModal from '../components/SignDetailModal';
+import type { Sign } from '../types';
 
 export default function LearnCategory() {
     const { category: categoryParam } = useParams();
-    const category = decodeURIComponent(categoryParam);
+    const category = decodeURIComponent(categoryParam ?? '');
     const { learnedSigns, learnSign } = useUser();
     const navigate = useNavigate();
     const categorySigns = useMemo(() => signs.filter((s) => s.category === category), [category]);
-    const [selected, setSelected] = useState(null);
+    const [selected, setSelected] = useState<Sign | null>(null);
 
     const learnedCount = categorySigns.filter((s) => learnedSigns.has(s.id)).length;
     const complete = learnedCount === categorySigns.length;

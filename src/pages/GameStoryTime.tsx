@@ -59,7 +59,7 @@ export default function GameStoryTime() {
     }
 
     const q = story.questions[qIndex];
-    const answer = (choice) => {
+    const answer = (choice: string) => {
         if (choice === q.answer) setCorrect((c) => c + 1);
         if (qIndex === story.questions.length - 1) setDone(true);
         else setQIndex((i) => i + 1);
