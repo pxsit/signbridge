@@ -6,13 +6,13 @@
 
 ## Build, Test, and Development Commands
 
-- `npm run dev`: Start Vite dev server (default `http://localhost:5173`).
-- `npm run test`: Run Vitest in watch mode for local iteration.
-- `npm run build`: Run the test suite, then create a production build in `dist/`.
-- `npm run preview`: Serve the production build locally.
-- `npm run lint`: Run ESLint across JS/TS/React files.
-- `npm run format`: Run Prettier across the codebase to format code.
-- `npm run deploy`: Publish `dist/` to GitHub Pages (`gh-pages`).
+- `pnpm dev`: Start Vite dev server (default `http://localhost:5173`).
+- `pnpm test`: Run Vitest in watch mode for local iteration.
+- `pnpm build`: Run the test suite, then create a production build in `dist/`.
+- `pnpm preview`: Serve the production build locally.
+- `pnpm lint`: Run ESLint across JS/TS/React files.
+- `pnpm format`: Run Prettier across the codebase to format code.
+- `pnpm deploy`: Publish `dist/` to GitHub Pages (`gh-pages`).
 
 ## Coding Style & Naming Conventions
 
@@ -27,7 +27,7 @@ This repo uses TypeScript + React functional components. Follow Prettier and ESL
 
 ## Testing Guidelines
 
-Vitest + Testing Library (`jsdom`) is the test stack. Place tests under `tests/` with `*.test.ts` or `*.test.tsx` suffixes (example: `tests/components/Badge.test.tsx`). Add or update tests for behavior changes in UI, utils, and state logic. Run `npm run test` locally; `npm run build` also enforces tests by running them first.
+Vitest + Testing Library (`jsdom`) is the test stack. Place tests under `tests/` with `*.test.ts` or `*.test.tsx` suffixes (example: `tests/components/Badge.test.tsx`). Add or update tests for behavior changes in UI, utils, and state logic. Run `pnpm test` locally; `pnpm build` also enforces tests by running them first.
 
 ## Commit & Pull Request Guidelines
 
@@ -37,5 +37,5 @@ For PRs, include:
 
 - Clear summary of user-facing and technical changes.
 - Linked issue(s) when applicable.
-- Test evidence (`npm run test`, `npm run lint`, and build result).
+- Test evidence (`pnpm test`, `pnpm lint`, and build result).
 - Screenshots/GIFs for UI changes.

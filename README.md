@@ -69,7 +69,7 @@ signbridge/
 ### Prerequisites
 
 - Node.js (v18+ recommended)
-- npm, pnpm, or yarn
+- pnpm
 
 ### Installation
 
@@ -83,23 +83,23 @@ signbridge/
 2. **Install dependencies:**
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Start the development server:**
    ```bash
-   npm run dev
+   pnpm dev
    ```
    Open your browser to the local URL provided by Vite (typically `http://localhost:5173`).
 
 ## 📜 Available Scripts
 
-- `npm run dev`: Starts the Vite development server.
-- `npm run build`: Runs the Vitest suite first. If all tests pass, compiles the TypeScript and builds the app for production (into the `/dist` directory).
-- `npm run preview`: Boot up a local static web server to serve the `/dist` folder.
-- `npm run lint`: Runs ESLint over the `src` directory to catch errors and enforce styling rules.
-- `npm run test`: Boots the Vitest test runner (in watch mode during development).
-- `npm run deploy`: Builds the project and deploys the `/dist` folder to GitHub Pages using the `gh-pages` module.
+- `pnpm dev`: Starts the Vite development server.
+- `pnpm build`: Runs the Vitest suite first. If all tests pass, compiles the TypeScript and builds the app for production (into the `/dist` directory).
+- `pnpm preview`: Boot up a local static web server to serve the `/dist` folder.
+- `pnpm lint`: Runs ESLint over the `src` directory to catch errors and enforce styling rules.
+- `pnpm test`: Boots the Vitest test runner (in watch mode during development).
+- `pnpm deploy`: Builds the project and deploys the `/dist` folder to GitHub Pages using the `gh-pages` module.
 
 ## 💾 State Management
 
@@ -119,4 +119,4 @@ When contributing to Signbridge:
 1. Try to maintain the usage of **React Hooks** and functional components.
 2. Keep UI components pure when possible, obtaining data via props or limited Context consumption.
 3. Reference `types/` for relevant TypeScript definitions.
-4. Run `npm run lint` and `npm run test` before committing to ensure regressions aren't introduced.
+4. Run `pnpm lint` and `pnpm test` before committing to ensure regressions aren't introduced.
