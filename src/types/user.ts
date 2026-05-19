@@ -17,4 +17,5 @@ export interface UserState {
   onboardingDone: boolean;
   caregiverMode: boolean;
   gameCompletions: Record<string, boolean>;
+  avatarId: string;
 }

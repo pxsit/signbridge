@@ -18,6 +18,7 @@ Signbridge is an interactive, gamified web application designed to help users le
 
 ### 📈 Progress & Motivation
 
+- **Avatars**: Earn and unlock fun profile avatars (like Swift Fox and Wise Owl) by learning signs, building streaks, and earning game stars.
 - **Streaks**: Daily login tracking encouraging consistent learning.
 - **Badges**: Unlockable achievements for hitting milestones (e.g., specific number of signs learned, perfect game scores).
 - **Session Logs**: Historical track of what categories you studied and for how long.
@@ -105,7 +106,7 @@ signbridge/
 
 The application leverages React Context (`UserContext.tsx`) combined with `localStorage` persistence. The `UserState` captures:
 
-- User metadata (name, role, onboarding completion)
+- User metadata (name, role, onboarding completion, chosen avatar)
 - Array of learned sign IDs
 - Calculated properties like `dailyStreak` and `lastPracticeDate`
 - Unlockable arrays (`earnedBadges`, `gameStars`)

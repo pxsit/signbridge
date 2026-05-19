@@ -9,6 +9,7 @@ import React, {
 import { loadState, saveState } from '@/utils/storage';
 import { checkStreak, getTodayISO } from '@/utils/streakUtils';
 import { checkForNewBadges } from '@/utils/badgeChecker';
+import { getUnlockedAvatarIds } from '@/utils/avatarUnlocks';
 import type { Sign, UserState } from '@/types';
 
 interface UpdateProfileInput {
@@ -25,6 +26,7 @@ interface UserContextValue extends Omit<UserState, 'learnedSigns'> {
   addGameResult: (gameId: string, stars: number, category?: string, duration?: number) => void;
   markPracticedToday: () => void;
   toggleCaregiverMode: () => void;
+  setAvatar: (avatarId: string) => void;
   setState: React.Dispatch<React.SetStateAction<UserState>>;
 }
 
@@ -40,6 +42,7 @@ const initialState: UserState = {
   onboardingDone: false,
   caregiverMode: false,
   gameCompletions: {},
+  avatarId: 'sprout',
 };
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -150,6 +153,14 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setState((prev) => ({ ...prev, caregiverMode: !prev.caregiverMode }));
   };
 
+  const setAvatar = (avatarId: string) => {
+    setState((prev) => {
+      const unlocked = getUnlockedAvatarIds(prev);
+      if (!unlocked.includes(avatarId)) return prev;
+      return { ...prev, avatarId };
+    });
+  };
+
   const value = useMemo<UserContextValue>(
     () => ({
       ...state,
@@ -160,6 +171,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       addGameResult,
       markPracticedToday,
       toggleCaregiverMode,
+      setAvatar,
       setState,
     }),
     [state]

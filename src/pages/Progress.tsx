@@ -3,9 +3,11 @@ import { badges } from '../data/badges';
 import { useUser } from '../context/UserContext';
 import ProgressBar from '../components/ProgressBar';
 import Badge from '../components/Badge';
+import AvatarUnlocks from '../components/AvatarUnlocks';
 
 export default function Progress() {
-  const { dailyStreak, learnedSigns, gameStars, earnedBadges, sessionLog } = useUser();
+  const { dailyStreak, learnedSigns, gameStars, earnedBadges, sessionLog, avatarId, setAvatar } =
+    useUser();
   const categories = [...new Set(signs.map((s) => s.category))];
 
   return (
@@ -43,6 +45,13 @@ export default function Progress() {
           ))}
         </div>
       </section>
+      <AvatarUnlocks
+        learnedSignsCount={learnedSigns.size}
+        dailyStreak={dailyStreak}
+        gameStars={gameStars}
+        selectedAvatarId={avatarId}
+        onSelectAvatar={setAvatar}
+      />
       <section className="rounded-2xl border bg-white p-4">
         <h2 className="text-xl font-bold">Session log</h2>
         <div className="mt-2 space-y-2">
