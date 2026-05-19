@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import GifPlaceholder from './GifPlaceholder';
 import type { Sign } from '@/types';
 
@@ -9,7 +9,7 @@ interface SignDetailModalProps {
   total: number;
   isLearned: boolean;
   onClose: () => void;
-  onLearn: (sign: Sign) => void;
+  onToggleLearned: (sign: Sign) => void;
 }
 
 export default function SignDetailModal({
@@ -18,18 +18,28 @@ export default function SignDetailModal({
   total,
   isLearned,
   onClose,
-  onLearn,
+  onToggleLearned,
 }: SignDetailModalProps) {
   const [replayKey, setReplayKey] = useState(0);
-  const [celebrate, setCelebrate] = useState(false);
-  const reducedMotion = useReducedMotion();
 
   if (!sign) return null;
 
   const handleLearn = () => {
-    onLearn(sign);
-    setCelebrate(true);
-    setTimeout(() => setCelebrate(false), 900);
+    const wasLearned = isLearned;
+    onToggleLearned(sign);
+
+    // We removed the !reducedMotion check because it was preventing the confetti
+    // from showing up if the OS "predictive animations" or "reduced motion" was on.
+    if (!wasLearned) {
+      void confetti({
+        particleCount: 120,
+        spread: 85,
+        startVelocity: 45,
+        origin: { y: 0.62 },
+        zIndex: 1000,
+        colors: ['#C0392B', '#F6C667', '#2F9E44', '#2563EB'],
+      });
+    }
   };
 
   return (
@@ -59,9 +69,9 @@ export default function SignDetailModal({
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
           <button
             onClick={handleLearn}
-            className="bg-primary min-h-12 rounded-xl px-4 py-3 font-bold text-white"
+            className={`min-h-12 rounded-xl px-4 py-3 font-bold text-white ${isLearned ? 'bg-slate-500' : 'bg-primary'}`}
           >
-            Got it! ✓
+            {isLearned ? 'Undo ✓' : 'Got it! ✓'}
           </button>
           <button
             onClick={() => setReplayKey((k) => k + 1)}
@@ -76,19 +86,7 @@ export default function SignDetailModal({
             ← Back
           </button>
         </div>
-        {isLearned && <p className="text-success font-bold">Already learned ✅</p>}
-        <AnimatePresence>
-          {celebrate && (
-            <motion.div
-              initial={reducedMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
-              animate={reducedMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              className="text-center text-2xl font-extrabold text-amber-600"
-            >
-              🎉 Confetti moment!
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {isLearned && <p className="text-success font-bold">Learned ✅</p>}
       </div>
     </div>
   );

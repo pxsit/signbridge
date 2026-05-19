@@ -9,7 +9,7 @@ import type { Sign } from '@/types';
 export default function LearnCategory() {
   const { category: categoryParam } = useParams();
   const category = decodeURIComponent(categoryParam ?? '');
-  const { learnedSigns, learnSign } = useUser();
+  const { learnedSigns, toggleSignLearned } = useUser();
   const navigate = useNavigate();
   const categorySigns = useMemo(() => signs.filter((s) => s.category === category), [category]);
   const [selected, setSelected] = useState<Sign | null>(null);
@@ -66,7 +66,7 @@ export default function LearnCategory() {
         total={categorySigns.length || 1}
         isLearned={selected ? learnedSigns.has(selected.id) : false}
         onClose={() => setSelected(null)}
-        onLearn={learnSign}
+        onToggleLearned={toggleSignLearned}
       />
     </div>
   );

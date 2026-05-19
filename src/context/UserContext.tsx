@@ -21,6 +21,7 @@ interface UserContextValue extends Omit<UserState, 'learnedSigns'> {
   learnedSigns: Set<number>;
   updateProfile: (input: UpdateProfileInput) => void;
   learnSign: (sign: Sign, duration?: number) => void;
+  toggleSignLearned: (sign: Sign, duration?: number) => void;
   addGameResult: (gameId: string, stars: number, category?: string, duration?: number) => void;
   markPracticedToday: () => void;
   toggleCaregiverMode: () => void;
@@ -85,6 +86,39 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const toggleSignLearned = (sign: Sign, duration = 1) => {
+    setState((prev) => {
+      const nextLearned = new Set(prev.learnedSigns);
+      const hadSign = nextLearned.has(sign.id);
+      if (hadSign) {
+        nextLearned.delete(sign.id);
+      } else {
+        nextLearned.add(sign.id);
+      }
+
+      const next: UserState = {
+        ...prev,
+        learnedSigns: [...nextLearned],
+        lastPracticeDate: getTodayISO(),
+        sessionLog: hadSign
+          ? prev.sessionLog
+          : [
+              { date: new Date().toISOString(), category: sign.category, duration, count: 1 },
+              ...prev.sessionLog,
+            ].slice(0, 100),
+      };
+
+      next.earnedBadges = checkForNewBadges({
+        learnedSigns: new Set(next.learnedSigns),
+        dailyStreak: next.dailyStreak,
+        gameStars: next.gameStars,
+        gameCompletions: next.gameCompletions,
+        earnedBadges: next.earnedBadges,
+      });
+      return next;
+    });
+  };
+
   const addGameResult = (gameId: string, stars: number, category = 'Games', duration = 2) => {
     setState((prev) => {
       const next: UserState = {
@@ -122,6 +156,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       learnedSigns: new Set(state.learnedSigns),
       updateProfile,
       learnSign,
+      toggleSignLearned,
       addGameResult,
       markPracticedToday,
       toggleCaregiverMode,

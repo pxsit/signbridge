@@ -20,7 +20,11 @@ export default function Onboarding() {
   const [userRole, setUserRole] = useState(roles[0]);
   const [userName, setUserName] = useState('');
 
-  const categories = [...new Set(signs.map((s) => s.category))];
+  const categories = [...new Set(signs.map((s) => s.category))].sort((a, b) => {
+    if (a === 'Basics') return -1;
+    if (b === 'Basics') return 1;
+    return a.localeCompare(b);
+  });
 
   const finish = (category: string) => {
     updateProfile({ userName: userName || 'Friend', userRole, onboardingDone: true });
@@ -84,6 +88,7 @@ export default function Onboarding() {
       {step === 4 && (
         <div className="rounded-2xl bg-white p-4">
           <h2 className="text-3xl font-extrabold">Pick your first topic to learn</h2>
+          <p className="mt-1 font-semibold text-slate-700">New here? Start with Basics first.</p>
           <div className="mt-3 grid gap-2">
             {categories.map((c) => (
               <CategoryCard key={c} icon="📚" title={c} onClick={() => finish(c)} />

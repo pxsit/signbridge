@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { signs } from '../data/signs';
 import { useUser } from '../context/UserContext';
 import GifPlaceholder from '../components/GifPlaceholder';
@@ -9,7 +10,11 @@ import StreakCard from '../components/StreakCard';
 export default function Home() {
   const { userName, learnedSigns, dailyStreak, learnSign } = useUser();
   const navigate = useNavigate();
-  const categories = [...new Set(signs.map((s) => s.category))];
+  const categories = [...new Set(signs.map((s) => s.category))].sort((a, b) => {
+    if (a === 'Basics') return -1;
+    if (b === 'Basics') return 1;
+    return a.localeCompare(b);
+  });
   const signOfDay = signs[new Date().getDate() % signs.length];
 
   return (
@@ -33,12 +38,22 @@ export default function Home() {
             label={signOfDay.gifPlaceholderLabel}
           />
           <p className="text-2xl font-extrabold">{signOfDay.word}</p>
-          <button
-            onClick={() => learnSign(signOfDay)}
-            className="bg-primary min-h-12 rounded-xl px-4 py-3 font-bold text-white"
-          >
-            Mark as learned
-          </button>
+          {learnedSigns.has(signOfDay.id) ? (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex min-h-12 w-full items-center justify-center rounded-xl bg-green-500 px-4 py-3 font-bold text-white shadow-sm"
+            >
+              Learned! ✓
+            </motion.div>
+          ) : (
+            <button
+              onClick={() => learnSign(signOfDay)}
+              className="bg-primary min-h-12 w-full rounded-xl px-4 py-3 font-bold text-white transition-transform active:scale-95"
+            >
+              Mark as learned
+            </button>
+          )}
         </div>
       </section>
       <div className="grid grid-cols-2 gap-2">
@@ -47,7 +62,7 @@ export default function Home() {
             key={c}
             icon="🧩"
             title={c}
-            subtitle={`${signs.filter((s) => s.category === c && learnedSigns.has(s.id)).length}/8 learned`}
+            subtitle={`${signs.filter((s) => s.category === c && learnedSigns.has(s.id)).length}/${signs.filter((s) => s.category === c).length} learned`}
             onClick={() => navigate(`/learn/${encodeURIComponent(c)}`)}
           />
         ))}

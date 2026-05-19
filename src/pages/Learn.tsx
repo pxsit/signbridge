@@ -4,7 +4,11 @@ import CategoryCard from '../components/CategoryCard';
 
 export default function Learn() {
   const navigate = useNavigate();
-  const categories = [...new Set(signs.map((s) => s.category))];
+  const categories = [...new Set(signs.map((s) => s.category))].sort((a, b) => {
+    if (a === 'Basics') return -1;
+    if (b === 'Basics') return 1;
+    return a.localeCompare(b);
+  });
   return (
     <div className="space-y-3">
       <h1 className="text-3xl font-extrabold">Learn SgSL</h1>

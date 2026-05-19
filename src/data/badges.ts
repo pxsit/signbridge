@@ -53,8 +53,8 @@ export const badges: Badge[] = [
   {
     id: 'signbridge_hero',
     name: 'SignBridge Hero',
-    description: 'Learned all 32 signs.',
+    description: 'Learned all 40 signs.',
     icon: '🏆',
-    condition: { type: 'signs_learned', value: 32 },
+    condition: { type: 'signs_learned', value: 40 },
   },
 ];
