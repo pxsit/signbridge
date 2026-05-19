@@ -25,7 +25,9 @@ interface UserContextValue extends Omit<UserState, 'learnedSigns'> {
   toggleSignLearned: (sign: Sign, duration?: number) => void;
   addGameResult: (gameId: string, stars: number, category?: string, duration?: number) => void;
   markPracticedToday: () => void;
-  toggleCaregiverMode: () => void;
+  enableCaregiverMode: (password: string) => boolean;
+  disableCaregiverMode: () => void;
+  unlockCaregiver: (password: string) => boolean;
   setAvatar: (avatarId: string) => void;
   setState: React.Dispatch<React.SetStateAction<UserState>>;
 }
@@ -41,6 +43,7 @@ const initialState: UserState = {
   sessionLog: [],
   onboardingDone: false,
   caregiverMode: false,
+  caregiverUnlocked: false,
   gameCompletions: {},
   avatarId: 'sprout',
 };
@@ -149,8 +152,20 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setState((prev) => ({ ...prev, userName, userRole, onboardingDone }));
   };
 
-  const toggleCaregiverMode = () => {
-    setState((prev) => ({ ...prev, caregiverMode: !prev.caregiverMode }));
+  const enableCaregiverMode = (password: string) => {
+    if (password !== 'caregiver') return false;
+    setState((prev) => ({ ...prev, caregiverMode: true, caregiverUnlocked: true }));
+    return true;
+  };
+
+  const disableCaregiverMode = () => {
+    setState((prev) => ({ ...prev, caregiverMode: false, caregiverUnlocked: false }));
+  };
+
+  const unlockCaregiver = (password: string) => {
+    if (password !== 'caregiver') return false;
+    setState((prev) => ({ ...prev, caregiverUnlocked: true }));
+    return true;
   };
 
   const setAvatar = (avatarId: string) => {
@@ -170,7 +185,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       toggleSignLearned,
       addGameResult,
       markPracticedToday,
-      toggleCaregiverMode,
+      enableCaregiverMode,
+      disableCaregiverMode,
+      unlockCaregiver,
       setAvatar,
       setState,
     }),

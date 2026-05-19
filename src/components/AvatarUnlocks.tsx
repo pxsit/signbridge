@@ -19,7 +19,9 @@ export default function AvatarUnlocks({
   return (
     <section className="rounded-2xl border bg-white p-4">
       <h2 className="text-xl font-bold">Avatar unlocks</h2>
-      <p className="mt-1 text-sm text-slate-600">Unlock and equip avatars as you level up your progress.</p>
+      <p className="mt-1 text-sm text-slate-600">
+        Unlock and equip avatars as you level up your progress.
+      </p>
       <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
         {avatars.map((avatar) => {
           const unlocked = isAvatarUnlocked(avatar, {

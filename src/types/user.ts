@@ -16,6 +16,7 @@ export interface UserState {
   sessionLog: SessionLogItem[];
   onboardingDone: boolean;
   caregiverMode: boolean;
+  caregiverUnlocked: boolean;
   gameCompletions: Record<string, boolean>;
   avatarId: string;
 }

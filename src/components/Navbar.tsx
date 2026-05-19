@@ -4,7 +4,7 @@ const links = [
   { to: '/', label: 'Home', icon: '🏠' },
   { to: '/learn', label: 'Learn', icon: '📖' },
   { to: '/games', label: 'Games', icon: '🎮' },
-  { to: '/progress', label: 'Progress', icon: '📊' },
+  { to: '/profile', label: 'Profile', icon: '👤' },
 ];
 
 export default function Navbar() {

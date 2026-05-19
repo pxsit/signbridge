@@ -1,18 +1,27 @@
-import { signs } from '../data/signs';
 import { badges } from '../data/badges';
 import { useUser } from '../context/UserContext';
-import ProgressBar from '../components/ProgressBar';
 import Badge from '../components/Badge';
 import AvatarUnlocks from '../components/AvatarUnlocks';
+import { avatars } from '../data/avatars';
 
 export default function Progress() {
   const { dailyStreak, learnedSigns, gameStars, earnedBadges, sessionLog, avatarId, setAvatar } =
     useUser();
-  const categories = [...new Set(signs.map((s) => s.category))];
+  const currentAvatar = avatars.find((avatar) => avatar.id === avatarId) ?? avatars[0];
 
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl font-extrabold">Progress Tracker</h1>
+      <div className="flex items-start justify-between">
+        <h1 className="text-3xl font-extrabold">Profile</h1>
+        <button
+          type="button"
+          className="rounded-full border bg-white px-3 py-2 text-2xl"
+          aria-label="Current avatar"
+          title={currentAvatar.name}
+        >
+          {currentAvatar.emoji}
+        </button>
+      </div>
       <div className="grid grid-cols-3 gap-2">
         <div className="rounded-xl border bg-white p-3">
           <p>🔥</p>
@@ -27,16 +36,6 @@ export default function Progress() {
           <p>{gameStars}</p>
         </div>
       </div>
-      <section className="rounded-2xl border bg-white p-4">
-        <h2 className="text-xl font-bold">Category completion</h2>
-        <div className="mt-2 space-y-2">
-          {categories.map((c) => {
-            const total = signs.filter((s) => s.category === c).length;
-            const current = signs.filter((s) => s.category === c && learnedSigns.has(s.id)).length;
-            return <ProgressBar key={c} current={current} total={total} label={c} />;
-          })}
-        </div>
-      </section>
       <section className="rounded-2xl border bg-white p-4">
         <h2 className="text-xl font-bold">Badges</h2>
         <div className="mt-2 grid grid-cols-2 gap-2">

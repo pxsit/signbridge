@@ -30,7 +30,8 @@ export default function App() {
         <Route path="/games/sign-match" element={<GameSignMatch />} />
         <Route path="/games/word-hunt" element={<GameWordHunt />} />
         <Route path="/games/story-time" element={<GameStoryTime />} />
-        <Route path="/progress" element={<Progress />} />
+        <Route path="/profile" element={<Progress />} />
+        <Route path="/progress" element={<Navigate to="/profile" replace />} />
         <Route path="/caregiver" element={<CaregiverMode />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="*" element={<Navigate to={onboardingDone ? '/' : '/onboarding'} replace />} />
