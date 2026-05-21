@@ -42,5 +42,5 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
   },
-  base: '/signbridge/',
+  base: '/',
 });
