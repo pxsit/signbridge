@@ -5,7 +5,7 @@ import Learn from '@/pages/Learn';
 import LearnCategory from '@/pages/LearnCategory';
 import Games from '@/pages/Games';
 import GameSignMatch from '@/pages/GameSignMatch';
-import GameWordHunt from '@/pages/GameWordHunt';
+import GameMemoryMatch from '@/pages/GameMemoryMatch';
 import GameStoryTime from '@/pages/GameStoryTime';
 import Progress from '@/pages/Progress';
 import CaregiverMode from '@/pages/CaregiverMode';
@@ -28,7 +28,7 @@ export default function App() {
         <Route path="/learn/:category" element={<LearnCategory />} />
         <Route path="/games" element={<Games />} />
         <Route path="/games/sign-match" element={<GameSignMatch />} />
-        <Route path="/games/word-hunt" element={<GameWordHunt />} />
+        <Route path="/games/memory-match" element={<GameMemoryMatch />} />
         <Route path="/games/story-time" element={<GameStoryTime />} />
         <Route path="/profile" element={<Progress />} />
         <Route path="/progress" element={<Navigate to="/profile" replace />} />

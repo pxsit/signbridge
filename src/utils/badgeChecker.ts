@@ -1,5 +1,5 @@
-import { badges } from '../data/badges';
-import { signs } from '../data/signs';
+import { badges } from '@/data/badges';
+import { signs } from '@/data/signs';
 
 interface BadgeCheckInput {
   learnedSigns: Set<number | string>;
@@ -9,6 +9,12 @@ interface BadgeCheckInput {
   earnedBadges: string[];
 }
 
+// Precompute category totals since `signs` is static data
+const CATEGORY_TOTALS = signs.reduce<Record<string, number>>((acc, sign) => {
+  acc[sign.category] = (acc[sign.category] || 0) + 1;
+  return acc;
+}, {});
+
 export const checkForNewBadges = ({
   learnedSigns,
   dailyStreak,
@@ -16,19 +22,17 @@ export const checkForNewBadges = ({
   gameCompletions,
   earnedBadges,
 }: BadgeCheckInput) => {
-  const categoryCompletion = signs.reduce<Record<string, { total: number; done: number }>>(
-    (acc, sign) => {
-      if (!acc[sign.category]) acc[sign.category] = { total: 0, done: 0 };
-      acc[sign.category].total += 1;
-      if (learnedSigns.has(sign.id)) acc[sign.category].done += 1;
-      return acc;
-    },
-    {}
-  );
+  // Compute how many signs are done per category in a single pass over learned signs and static data
+  const categoryDone = signs.reduce<Record<string, number>>((acc, sign) => {
+    if (!acc[sign.category]) acc[sign.category] = 0;
+    if (learnedSigns.has(sign.id)) acc[sign.category] += 1;
+    return acc; // We accrue completed counts
+  }, {});
 
-  const completedCategories = Object.values(categoryCompletion).filter(
-    (c) => c.done === c.total
+  const completedCategories = Object.keys(CATEGORY_TOTALS).filter(
+    (cat) => categoryDone[cat] === CATEGORY_TOTALS[cat]
   ).length;
+
   const earned = new Set(earnedBadges);
 
   badges.forEach((badge) => {
@@ -41,7 +45,7 @@ export const checkForNewBadges = ({
       (type === 'stars' && gameStars >= Number(value)) ||
       (type === 'games_completed' && Object.keys(gameCompletions).length >= Number(value)) ||
       (type === 'category_complete' &&
-        categoryCompletion[String(value)]?.done === categoryCompletion[String(value)]?.total);
+        categoryDone[String(value)] === CATEGORY_TOTALS[String(value)]);
 
     if (unlocked) earned.add(badge.id);
   });

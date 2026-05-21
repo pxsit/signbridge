@@ -10,6 +10,7 @@ import { loadState, saveState } from '@/utils/storage';
 import { checkStreak, getTodayISO } from '@/utils/streakUtils';
 import { checkForNewBadges } from '@/utils/badgeChecker';
 import { getUnlockedAvatarIds } from '@/utils/avatarUnlocks';
+import { signs } from '@/data/signs';
 import type { Sign, UserState } from '@/types';
 
 interface UpdateProfileInput {
@@ -29,6 +30,7 @@ interface UserContextValue extends Omit<UserState, 'learnedSigns'> {
   disableCaregiverMode: () => void;
   unlockCaregiver: (password: string) => boolean;
   setAvatar: (avatarId: string) => void;
+  resetCategoryProgress: (categoryName: string) => void;
   setState: React.Dispatch<React.SetStateAction<UserState>>;
 }
 
@@ -71,6 +73,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const learnSign = (sign: Sign, duration = 1) => {
     setState((prev) => {
       const nextLearned = new Set(prev.learnedSigns);
+      if (nextLearned.has(sign.id)) return prev;
+
       nextLearned.add(sign.id);
       const next: UserState = {
         ...prev,
@@ -81,8 +85,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
           ...prev.sessionLog,
         ].slice(0, 100),
       };
+
       next.earnedBadges = checkForNewBadges({
-        learnedSigns: new Set(next.learnedSigns),
+        learnedSigns: nextLearned,
         dailyStreak: next.dailyStreak,
         gameStars: next.gameStars,
         gameCompletions: next.gameCompletions,
@@ -115,7 +120,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       };
 
       next.earnedBadges = checkForNewBadges({
-        learnedSigns: new Set(next.learnedSigns),
+        learnedSigns: nextLearned,
         dailyStreak: next.dailyStreak,
         gameStars: next.gameStars,
         gameCompletions: next.gameCompletions,
@@ -176,6 +181,19 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     });
   };
 
+  const resetCategoryProgress = (categoryName: string) => {
+    setState((prev) => {
+      const categorySignIds = new Set(
+        signs.filter((s) => s.category === categoryName).map((s) => s.id)
+      );
+      const nextLearned = prev.learnedSigns.filter((id) => !categorySignIds.has(id));
+      return {
+        ...prev,
+        learnedSigns: nextLearned,
+      };
+    });
+  };
+
   const value = useMemo<UserContextValue>(
     () => ({
       ...state,
@@ -189,6 +207,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       disableCaregiverMode,
       unlockCaregiver,
       setAvatar,
+      resetCategoryProgress,
       setState,
     }),
     [state]

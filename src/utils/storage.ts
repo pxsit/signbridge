@@ -1,5 +1,6 @@
 import type { UserState } from '@/types';
-import { STORAGE_KEY } from '@/constants';
+
+export const STORAGE_KEY = 'signbridge_user_state';
 
 export const loadState = (): UserState | null => {
   try {

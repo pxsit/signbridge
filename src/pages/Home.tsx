@@ -1,20 +1,37 @@
+import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { signs } from '../data/signs';
-import { useUser } from '../context/UserContext';
-import GifPlaceholder from '../components/GifPlaceholder';
-import CategoryCard from '../components/CategoryCard';
-import Mascot from '../components/Mascot';
-import StreakCard from '../components/StreakCard';
+import { signs } from '@/data/signs';
+import { useUser } from '@/context/UserContext';
+import GifPlaceholder from '@/components/GifPlaceholder';
+import CategoryCard from '@/components/CategoryCard';
+import Mascot from '@/components/Mascot';
+import StreakCard from '@/components/StreakCard';
 
 export default function Home() {
   const { userName, learnedSigns, dailyStreak, learnSign } = useUser();
   const navigate = useNavigate();
-  const categories = [...new Set(signs.map((s) => s.category))].sort((a, b) => {
-    if (a === 'Basics') return -1;
-    if (b === 'Basics') return 1;
-    return a.localeCompare(b);
-  });
+
+  const categoryStats = useMemo(() => {
+    const stats: Record<string, { total: number; learned: number }> = {};
+    signs.forEach((s) => {
+      if (!stats[s.category]) stats[s.category] = { total: 0, learned: 0 };
+      stats[s.category].total += 1;
+      if (learnedSigns.has(s.id)) stats[s.category].learned += 1;
+    });
+
+    const sortedCategories = Object.keys(stats).sort((a, b) => {
+      if (a === 'Basics') return -1;
+      if (b === 'Basics') return 1;
+      return a.localeCompare(b);
+    });
+
+    return sortedCategories.map((c) => ({
+      name: c,
+      ...stats[c],
+    }));
+  }, [learnedSigns]);
+
   const signOfDay = signs[new Date().getDate() % signs.length];
 
   return (
@@ -57,13 +74,13 @@ export default function Home() {
         </div>
       </section>
       <div className="grid grid-cols-2 gap-2">
-        {categories.map((c) => (
+        {categoryStats.map((c) => (
           <CategoryCard
-            key={c}
+            key={c.name}
             icon="🧩"
-            title={c}
-            subtitle={`${signs.filter((s) => s.category === c && learnedSigns.has(s.id)).length}/${signs.filter((s) => s.category === c).length} learned`}
-            onClick={() => navigate(`/learn/${encodeURIComponent(c)}`)}
+            title={c.name}
+            subtitle={`${c.learned}/${c.total} learned`}
+            onClick={() => navigate(`/learn/${encodeURIComponent(c.name)}`)}
           />
         ))}
       </div>

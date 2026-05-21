@@ -1,8 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { loadState, saveState } from '../../src/utils/storage';
+import { loadState, saveState, STORAGE_KEY } from '../../src/utils/storage';
 import type { UserState } from '../../src/types';
-
-const STORAGE_KEY = 'signbridge_user_state';
 
 const localStorageMock = (function () {
   let store: Record<string, string> = {};
