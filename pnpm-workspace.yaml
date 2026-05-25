@@ -1,3 +1,6 @@
+packages:
+  - '.'
+
 minimumReleaseAgeExclude:
   - '@types/node@25.9.0'
   - '@typescript-eslint/eslint-plugin@8.59.4'
