@@ -88,9 +88,11 @@ signbridge/
    ```
 
 3. **Start the development server:**
+
    ```bash
    pnpm dev
    ```
+
    Open your browser to the local URL provided by Vite (typically `http://localhost:5173`).
 
 ## 📜 Available Scripts
